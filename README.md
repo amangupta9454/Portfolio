@@ -5,7 +5,7 @@
 
   <p style="font-size: 1.2em; text-align: center;">
     A highly animated and responsive portfolio website built with the MERN stack and advanced front-end libraries.<br />
-    <a href="https://amanguptaportfoliodev.netlify.app" target="_blank" style="color: #3b82f6;">🌐 Live Portfolio Link</a>
+    <a href="https://guptaaman.netlify.app/" target="_blank" style="color: #3b82f6;">🌐 Live Portfolio Link</a>
   </p>
 
   <hr style="border: none; border-top: 2px solid #ddd;" />
