@@ -25,7 +25,7 @@ const Projects = () => {
     },
     {
       id: 2,
-      name: "Advanced Calculator",
+      name: "TECH FEST REGISTRATIION WEBSITE",
       description: "A fully functional college technical fest website with modern UI and custom features.",
       image: calculatorImage,
       sourceCode: "https://github.com/amangupta9454/technical_fest",
