@@ -130,7 +130,7 @@ const Qualification = () => {
             </h3>
           </div>
           <p className="text-gray-100 text-lg tracking-wide leading-relaxed font-medium">
-            Conquered 1st place in a nationwide technical quiz, surpassing 200+ contenders – a shining testament to brilliance!
+            Conquered 1st place in a Institute technical quiz, surpassing 200+ contenders – a shining testament to brilliance!
           </p>
         </div>
       </div>
