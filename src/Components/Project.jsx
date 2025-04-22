@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import healthImage from "../assets/health.jpeg";
 import calculatorImage from "../assets/calculator.jpeg";
 import techImage from "../assets/techclub.jpg";
+import agri from "../assets/agri.jpg";
 import { gsap } from "gsap";
 import ScrollReveal from "scrollreveal";
 import VanillaTilt from "vanilla-tilt";
@@ -15,12 +16,12 @@ const Projects = () => {
   const projects = [
     {
       id: 1,
-      name: "Aman Healthcare Website",
-      description: "A sleek healthcare platform with responsive design and smooth animations.",
-      image: healthImage,
-      sourceCode: "https://github.com/amangupta9454/mini_project",
-      livePreview: "https://amanhealthcare.netlify.app/",
-      tags: ["HTML", "CSS", "JavaScript"],
+      name: "FARMIO-Local Roots, Fresh Routes",
+      description: "A fully functional FARMER-CONSUMER AGRICULTURE website with modern UI and custom features.",
+      image: agri,
+      sourceCode: "https://github.com/amangupta9454/FARMER-CONSUMER-MARKER",
+      livePreview: "https://agrifarmio.netlify.app/",
+      tags: ["REACT.JS", "TAILWIND CSS", "MONGODB", "EXPRESS.JS", "NODE.JS", "OPENAI API", "DATA.GOV API"],
       featured: true,
     },
     {
@@ -31,7 +32,7 @@ const Projects = () => {
       sourceCode: "https://github.com/amangupta9454/technical_fest",
       livePreview: "https://crossroadhiet.netlify.app/",
       tags: ["REACT.JS", "TAILWIND CSS", "MONGODB", "EXPRESS.JS", "NODE.JS",],
-      featured: false,
+      featured: true,
     },
     {
       id: 3,
