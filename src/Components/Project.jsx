@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import healthImage from "../assets/health.jpeg";
+import Image from "../assets/image.png"
 import calculatorImage from "../assets/calculator.jpeg";
 import techImage from "../assets/techclub.jpg";
 import agri from "../assets/agri.jpg";
@@ -42,6 +42,16 @@ const Projects = () => {
       sourceCode: "https://github.com/amangupta9454/Technical_club",
       livePreview: "https://techfusion2024.netlify.app/",
       tags: ["React", "TailwindCSS", "Animations"],
+      featured: true,
+    },
+     {
+      id: 4,
+      name: "TEAMUP PLATFORM FOR HACKATHON ENTHUSIASTICS",
+      description: "A fully functional Teamup platform website with modern UI and custom features.",
+      image: Image,
+      sourceCode: "https://github.com/amangupta9454/college",
+      livePreview: "https://hietteam.netlify.app/",
+      tags: ["MERN STACK"],
       featured: true,
     },
   ];
