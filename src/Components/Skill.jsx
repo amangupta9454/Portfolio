@@ -29,12 +29,12 @@ const skills = [
   { name: "Node.js", icon: <FaNodeJs className="text-green-500" />, proficiency: 85 },
   { name: "MongoDB", icon: <FaDatabase className="text-green-700" />, proficiency: 82 },
   { name: "Nodemailer", icon: <FaEnvelope  className="text-blue-400" />, proficiency: 90 },
-  { name: "GSAP", icon: <FaBrain className="text-lime-400" />, proficiency: 20 },
+  // { name: "GSAP", icon: <FaBrain className="text-lime-400" />, proficiency: 20 },
   { name: "C", icon: <FaCuttlefish className="text-blue-400" />, proficiency: 50 },
   { name: "C++", icon: <SiCplusplus  className="text-indigo-500" />, proficiency: 10 },
   { name: "Python", icon: <SiPython  className="text-yellow-500" />, proficiency: 0 },
-  { name: "DSA", icon: <FaGitAlt className="text-orange-400" />, proficiency: 5 },
-  { name: "AI Use", icon: <FaBrain className="text-purple-400" />, proficiency: 100 },
+  { name: "DSA(Basic)", icon: <FaGitAlt className="text-orange-400" />, proficiency: 5 },
+  // { name: "AI Use", icon: <FaBrain className="text-purple-400" />, proficiency: 100 },
 ];
 
 const Skill = () => {
@@ -87,7 +87,7 @@ const Skill = () => {
         ref={cuboidRef}
         className="absolute inset-0 opacity-40 pointer-events-none block"
       >
-        {[...Array(15)].map((_, i) => (
+        {[...Array(13)].map((_, i) => (
           <div
             key={i}
             className="absolute cuboid"
