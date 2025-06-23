@@ -173,14 +173,14 @@ const Home = () => {
       <div className="z-0 max-w-7xl w-full flex flex-col md:flex-row items-center justify-center gap-12 md:gap-24 sr-fade">
         {/* Text Section */}
         <div className={`w-full md:w-1/2 text-center md:text-left flex flex-col justify-center items-center md:items-start p-8 md:p-10 rounded-3xl border ${isDarkTheme ? 'border-white/10 bg-white/5' : 'border-black/10 bg-black/5'} backdrop-blur-md shadow-2xl hover:scale-[1.03] transition duration-500 hover:shadow-yellow-400/30 sr-left`}>
-          <h1 className={`text-4xl md:text-5xl lg:text-6xl font-extrabold text-transparent bg-clip-text ${isDarkTheme ? 'bg-gradient-to-r from-yellow-300 via-orange-400 to-yellow-100' : 'bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500'} drop-shadow-xl animate-jump-text`}>
+          <h1 className={`text-4xl md:text-4xl lg:text-5xl font-semibold text-transparent bg-clip-text ${isDarkTheme ? 'bg-gradient-to-r from-yellow-300 via-orange-400 to-yellow-100' : 'bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500'} drop-shadow-xl animate-jump-text`}>
             {greeting}, I'm Aman Gupta
           </h1>
           <p className={`${isDarkTheme ? 'text-green-400' : 'text-blue-600'} text-lg md:text-3xl lg:text-3xl font-semibold mt-4`}>
             <span ref={typedRef}></span>
           </p>
 
-          {/* Live Clock */}
+          {/* Live Clock
           <div className={`mt-4 text-sm md:text-lg ${isDarkTheme ? 'text-gray-300' : 'text-gray-700'}`}>
             Current Time: 
             <span className="ml-2 font-mono">
@@ -190,7 +190,7 @@ const Home = () => {
                 </span>
               ))}
             </span>
-          </div>
+          </div> */}
 
           {/* Social Links */}
           <div className="flex flex-wrap justify-center md:justify-start gap-4 pt-6">

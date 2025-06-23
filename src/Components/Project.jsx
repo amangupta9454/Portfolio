@@ -3,6 +3,7 @@ import Image from "../assets/image.png"
 import calculatorImage from "../assets/calculator.jpeg";
 import techImage from "../assets/techclub.jpg";
 import agri from "../assets/agri.jpg";
+import health from "../assets/health.jpeg";
 import { gsap } from "gsap";
 import ScrollReveal from "scrollreveal";
 import VanillaTilt from "vanilla-tilt";
@@ -32,7 +33,7 @@ const Projects = () => {
       sourceCode: "https://github.com/amangupta9454/CROSSROAD_2025",
       livePreview: "https://crossroad2025.netlify.app/",
       tags: ["REACT.JS", "TAILWIND CSS", "MONGODB", "EXPRESS.JS", "NODE.JS",],
-      featured: true,
+      featured: false,
     },
     {
       id: 3,
@@ -42,7 +43,7 @@ const Projects = () => {
       sourceCode: "https://github.com/amangupta9454/Technical_club",
       livePreview: "https://techfusion2024.netlify.app/",
       tags: ["React", "TailwindCSS", "Animations"],
-      featured: true,
+      featured: false,
     },
      {
       id: 4,
@@ -52,6 +53,16 @@ const Projects = () => {
       sourceCode: "https://github.com/amangupta9454/college",
       livePreview: "https://hietteam.netlify.app/",
       tags: ["MERN STACK"],
+      featured: true,
+    },
+    {
+      id: 5,
+      name: "AI-POWERED HEALTHCARE APPOINTMENT SYSTEM",
+      description: "A fully functional AI-powered healthcare appointment system with modern UI and custom features.",
+      image: health,
+      sourceCode: "https://github.com/amangupta9454/AI_HEALTHCARE",
+      livePreview: "https://amanhealth.netlify.app/",
+      tags: ["REACT.JS", "TAILWIND CSS", "MONGODB", "EXPRESS.JS", "NODE.JS", "OPENAI API", "NODEMAILER","GEMINI API"],
       featured: true,
     },
   ];
