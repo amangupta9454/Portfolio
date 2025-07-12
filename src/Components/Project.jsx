@@ -1,18 +1,14 @@
-import React, { useEffect, useRef } from "react";
-import Image from "../assets/image.png"
+import React, { useEffect, useRef, useState } from "react";
+import Image from "../assets/image.png";
 import calculatorImage from "../assets/calculator.jpeg";
 import techImage from "../assets/techclub.jpg";
 import agri from "../assets/agri.jpg";
 import health from "../assets/health.jpeg";
-import { gsap } from "gsap";
-import ScrollReveal from "scrollreveal";
-import VanillaTilt from "vanilla-tilt";
 import { FaCode, FaExternalLinkAlt, FaStar } from "react-icons/fa";
 
 const Projects = () => {
   const sectionRef = useRef(null);
-  const headingRef = useRef(null);
-  const cardsRef = useRef([]);
+  const [isDarkTheme] = useState(true);
 
   const projects = [
     {
@@ -27,12 +23,12 @@ const Projects = () => {
     },
     {
       id: 2,
-      name: "TECH FEST REGISTRATIION WEBSITE",
+      name: "TECH FEST REGISTRATION WEBSITE",
       description: "A fully functional college technical fest website with modern UI and custom features.",
       image: calculatorImage,
       sourceCode: "https://github.com/amangupta9454/CROSSROAD_2025",
       livePreview: "https://crossroad2025.netlify.app/",
-      tags: ["REACT.JS", "TAILWIND CSS", "MONGODB", "EXPRESS.JS", "NODE.JS",],
+      tags: ["REACT.JS", "TAILWIND CSS", "MONGODB", "EXPRESS.JS", "NODE.JS"],
       featured: false,
     },
     {
@@ -45,9 +41,9 @@ const Projects = () => {
       tags: ["React", "TailwindCSS", "Animations"],
       featured: false,
     },
-     {
+    {
       id: 4,
-      name: "TEAMUP PLATFORM FOR HACKATHON ENTHUSIASTICS",
+      name: "TEAMUP PLATFORM FOR HACKATHON ENTHUSIASTS",
       description: "A fully functional Teamup platform website with modern UI and custom features.",
       image: Image,
       sourceCode: "https://github.com/amangupta9454/college",
@@ -62,63 +58,20 @@ const Projects = () => {
       image: health,
       sourceCode: "https://github.com/amangupta9454/AI_HEALTHCARE",
       livePreview: "https://amanhealth.netlify.app/",
-      tags: ["REACT.JS", "TAILWIND CSS", "MONGODB", "EXPRESS.JS", "NODE.JS", "OPENAI API", "NODEMAILER","GEMINI API"],
+      tags: ["REACT.JS", "TAILWIND CSS", "MONGODB", "EXPRESS.JS", "NODE.JS", "OPENAI API", "NODEMAILER", "GEMINI API"],
       featured: true,
     },
   ];
 
   useEffect(() => {
-    // ScrollReveal Configuration
-    const sr = ScrollReveal({
-      distance: "120px",
-      duration: 1800,
-      easing: "cubic-bezier(0.68, -0.55, 0.265, 1.55)",
-      reset: true,
-      viewFactor: 0.3,
-      mobile: true,
-    });
-
-    sr.reveal(headingRef.current, {
-      origin: "top",
-      delay: 200,
-      scale: 0.85,
-      opacity: 0,
-    });
-
-    cardsRef.current.forEach((card, index) => {
-      sr.reveal(card, {
-        origin: index % 2 === 0 ? "left" : "right",
-        delay: 400 + index * 300,
-        rotate: { x: 0, y: 0, z: index % 2 === 0 ? -10 : 10 },
-        opacity: 0,
-      });
-
-      if (card) {
-        VanillaTilt.init(card, {
-          max: 3,
-          speed: 600,
-         
-          glare: true,
-          "max-glare": 0.5,
-          
-        });
-      }
-    });
-
-    // Floating Shapes Animation
-    const shapes = sectionRef.current.querySelectorAll(".float-shape");
-    shapes.forEach((shape, index) => {
-      gsap.to(shape, {
-        x: () => Math.sin(index) * 250,
-        y: () => Math.cos(index) * 250,
-        rotation: () => Math.random() * 180 - 90,
-        scale: () => Math.random() * 0.5 + 0.8,
-        duration: () => Math.random() * 4 + 2,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-        delay: index * 0.5,
-      });
+    const gradients = sectionRef.current.querySelectorAll(".gradient-overlay");
+    gradients.forEach((gradient, index) => {
+      const animateGradient = () => {
+        gradient.style.opacity = 0.2 + Math.sin(Date.now() * 0.001 + index) * 0.1;
+        gradient.style.transform = `scale(${1 + Math.sin(Date.now() * 0.0005 + index) * 0.1})`;
+        requestAnimationFrame(animateGradient);
+      };
+      animateGradient();
     });
   }, []);
 
@@ -126,84 +79,69 @@ const Projects = () => {
     <div
       id="projects"
       ref={sectionRef}
-      className="relative w-full min-h-screen md:min-h-10 py-24 px-8 text-white bg-gradient-to-br from-gray-900 via-black to-purple-950 overflow-hidden"
+      className="relative w-full min-h-screen md:min-h-10 py-16 px-6 text-white bg-[#0e0d26] overflow-hidden"
     >
-      {/* Floating Shapes */}
       <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="float-shape w-48 h-48 bg-purple-700/25 rounded-full absolute top-[15%] left-[20%] blur-3xl" />
-        <div className="float-shape w-72 h-72 bg-blue-700/25 absolute bottom-[25%] right-[15%] clip-path-pentagon blur-3xl" />
-        <div className="float-shape w-36 h-36 bg-pink-700/25 absolute top-[60%] left-[70%] clip-path-hexagon blur-2xl" />
-        <div className="float-shape w-28 h-28 bg-yellow-500/20 absolute top-[30%] right-[10%] clip-path-star blur-2xl" />
-        <div className="float-shape w-32 h-32 bg-green-500/20 absolute bottom-[15%] left-[10%] rounded-full blur-2xl" />
+        <div className={`gradient-overlay w-[400px] h-[400px] ${isDarkTheme ? 'bg-gradient-to-r from-purple-700 to-pink-500' : 'bg-gradient-to-r from-blue-300 to-cyan-400'} rounded-full blur-[150px] opacity-20 top-[10%] left-[15%]`}></div>
+        <div className={`gradient-overlay w-[300px] h-[300px] ${isDarkTheme ? 'bg-gradient-to-r from-blue-600 to-cyan-500' : 'bg-gradient-to-r from-pink-300 to-purple-400'} rounded-full blur-[150px] opacity-20 bottom-[10%] right-[15%]`}></div>
       </div>
 
       <div className="relative z-10 max-w-screen-xl mx-auto">
-        <div className="text-center mb-20">
-          <h2
-            ref={headingRef}
-            className="text-5xl md:text-7xl font-extrabold bg-gradient-to-r from-purple-400 via-pink-500 to-blue-500 bg-clip-text text-transparent border-b-4 border-purple-500 inline-block pb-4 animate-pulse-slow"
-          >
+        <div className="text-center mb-12">
+          <h2 className="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-purple-400 via-pink-500 to-blue-500 bg-clip-text text-transparent">
             Projects
           </h2>
-          <br />
-          <p className="pt-6 text-gray-200 text-xl font-light tracking-wider bg-black/50 px-4 py-2 rounded-full inline-block">
+          <p className="mt-2 text-gray-200 text-lg font-light tracking-wider">
             Discover my creative journey through code
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-12">
-          {projects.map(({ id, name, description, image, sourceCode, livePreview, tags, featured }, index) => (
+        <div className="grid md:grid-cols-3 gap-8">
+          {projects.map(({ id, name, description, image, sourceCode, livePreview, tags, featured }) => (
             <div
               key={id}
-              ref={(el) => (cardsRef.current[index] = el)}
-              className="group bg-gradient-to-br from-gray-800/90 to-black/90 backdrop-blur-xl p-6 rounded-3xl shadow-xl border border-purple-500/30 hover:border-purple-600 hover:shadow-[0_0_25px_rgba(147,51,234,0.5)] transition-all duration-500 relative overflow-hidden cursor-pointer"
+              className="group bg-gradient-to-br from-gray-800/90 to-black/90 backdrop-blur-xl p-5 rounded-2xl shadow-lg border border-purple-500/50 hover:border-purple-600/80 hover:shadow-[0_0_20px_rgba(147,51,234,0.6)] transition-all duration-300 relative overflow-hidden cursor-pointer"
             >
-              {/* Card Background Effect */}
-              <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-purple-700/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl pointer-events-none" />
+              <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-purple-700/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl pointer-events-none" />
 
-              {/* Featured Badge */}
               {featured && (
-                <div className="absolute top-4 right-4 z-20 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1">
-                  <FaStar /> Featured
+                <div className="absolute top-3 right-3 z-20 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1.5 animate-pulse">
+                  <FaStar className="text-sm" /> Featured
                 </div>
               )}
 
-              {/* Image */}
-              <div className="relative z-10 overflow-hidden rounded-xl transition-transform duration-700 group-hover:scale-105">
+              <div className="relative z-10 overflow-hidden rounded-lg transition-transform duration-500 group-hover:scale-102">
                 <img
                   src={image}
                   alt={name}
-                  className="w-full h-60 object-cover rounded-xl shadow-md transition-all duration-500 group-hover:brightness-110"
+                  className="w-full h-56 object-cover rounded-lg shadow-md transition-all duration-300 group-hover:brightness-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg" />
               </div>
 
-              {/* Content */}
-              <div className="mt-6 z-10 relative">
-                <h3 className="text-2xl font-bold bg-gradient-to-r from-white to-purple-300 bg-clip-text text-transparent group-hover:from-purple-400 group-hover:to-pink-600 transition-all duration-300">
+              <div className="mt-4 z-10 relative">
+                <h3 className="text-xl font-bold bg-gradient-to-r from-white via-purple-300 to-pink-400 bg-clip-text text-transparent group-hover:from-purple-400 group-hover:to-pink-600 transition-all duration-300">
                   {name}
                 </h3>
-                <p className="mt-3 text-gray-300 font-medium leading-relaxed">{description}</p>
+                <p className="mt-2 text-gray-300 text-sm font-medium leading-relaxed">{description}</p>
 
-                {/* Tags */}
-                <div className="mt-4 flex flex-wrap gap-2">
+                <div className="mt-3 flex flex-wrap gap-1.5">
                   {tags.map((tag, i) => (
                     <span
                       key={i}
-                      className="px-2 py-1 text-xs font-medium bg-purple-500/20 text-purple-300 rounded-full border border-purple-500/40 group-hover:bg-purple-500/40 transition-colors duration-300"
+                      className="px-2 py-1 text-xs font-medium bg-purple-500/30 text-purple-200 rounded-full border border-purple-500/50 group-hover:bg-purple-500/50 group-hover:border-purple-600/70 transition-all duration-300"
                     >
                       {tag}
                     </span>
                   ))}
                 </div>
 
-                {/* Buttons */}
-                <div className="mt-6 flex gap-4 flex-wrap">
+                <div className="mt-4 flex gap-3 flex-wrap">
                   <a
                     href={sourceCode}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-500 hover:to-blue-700 text-white rounded-full font-medium shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-300"
+                    className="flex items-center gap-1.5 px-5 py-2 bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-500 hover:to-blue-700 text-white rounded-full text-sm font-medium shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-300"
                   >
                     <FaCode /> Source
                   </a>
@@ -211,7 +149,7 @@ const Projects = () => {
                     href={livePreview}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white rounded-full font-medium shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-300"
+                    className="flex items-center gap-1.5 px-5 py-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white rounded-full text-sm font-medium shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-300"
                   >
                     <FaExternalLinkAlt /> Demo
                   </a>
@@ -222,40 +160,18 @@ const Projects = () => {
         </div>
       </div>
 
-      {/* Custom Shape CSS */}
       <style>{`
-  .clip-path-pentagon {
-    clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
-  }
-  .clip-path-hexagon {
-    clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
-  }
-  .clip-path-star {
-    clip-path: polygon(
-      50% 0%,
-      61% 35%,
-      98% 35%,
-      68% 57%,
-      79% 91%,
-      50% 70%,
-      21% 91%,
-      32% 57%,
-      2% 35%,
-      39% 35%
-    );
-  }
-  .animate-pulse-slow {
-    animation: pulse 4s infinite ease-in-out;
-  }
-  @keyframes pulse {
-    0%, 100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.85;
-    }
-  }
-`}</style>
+        .animate-pulse {
+          animation: pulse 3s infinite ease-in-out;
+        }
+        @keyframes pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.7; }
+        }
+        .gradient-overlay {
+          transition: opacity 1s ease-in-out, transform 3s ease-in-out;
+        }
+      `}</style>
     </div>
   );
 };

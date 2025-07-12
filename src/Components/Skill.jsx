@@ -1,4 +1,4 @@
-import  { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   FaHtml5,
   FaCss3Alt,
@@ -8,11 +8,9 @@ import {
   FaDatabase,
   FaEnvelope,
   FaCuttlefish,
-  FaBrain,
- 
   FaGitAlt
 } from "react-icons/fa";
-import { SiTailwindcss, SiPython, SiCplusplus,SiExpress } from "react-icons/si";
+import { SiTailwindcss, SiPython, SiCplusplus, SiExpress } from "react-icons/si";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ScrollReveal from "scrollreveal";
@@ -24,118 +22,163 @@ const skills = [
   { name: "CSS3", icon: <FaCss3Alt className="text-blue-600" />, proficiency: 50 },
   { name: "JavaScript", icon: <FaJsSquare className="text-yellow-400" />, proficiency: 80 },
   { name: "React.js", icon: <FaReact className="text-cyan-400" />, proficiency: 60 },
-  { name: "Tailwind CSS", icon: <SiTailwindcss  className="text-teal-400" />, proficiency: 40 },
-  { name: "Express.js", icon: <SiExpress  className="text-gray-300" />, proficiency: 85 },
+  { name: "Tailwind CSS", icon: <SiTailwindcss className="text-teal-400" />, proficiency: 40 },
+  { name: "Express.js", icon: <SiExpress className="text-gray-300" />, proficiency: 85 },
   { name: "Node.js", icon: <FaNodeJs className="text-green-500" />, proficiency: 85 },
   { name: "MongoDB", icon: <FaDatabase className="text-green-700" />, proficiency: 82 },
-  { name: "Nodemailer", icon: <FaEnvelope  className="text-blue-400" />, proficiency: 90 },
-  // { name: "GSAP", icon: <FaBrain className="text-lime-400" />, proficiency: 20 },
+  { name: "Nodemailer", icon: <FaEnvelope className="text-blue-400" />, proficiency: 90 },
   { name: "C", icon: <FaCuttlefish className="text-blue-400" />, proficiency: 50 },
-  { name: "C++", icon: <SiCplusplus  className="text-indigo-500" />, proficiency: 10 },
-  { name: "Python", icon: <SiPython  className="text-yellow-500" />, proficiency: 0 },
+  { name: "C++", icon: <SiCplusplus className="text-indigo-500" />, proficiency: 10 },
+  { name: "Python", icon: <SiPython className="text-yellow-500" />, proficiency: 0 },
   { name: "DSA(Basic)", icon: <FaGitAlt className="text-orange-400" />, proficiency: 5 },
-  // { name: "AI Use", icon: <FaBrain className="text-purple-400" />, proficiency: 100 },
 ];
 
 const Skill = () => {
   const sectionRef = useRef(null);
-  const cuboidRef = useRef(null);
   const titleRef = useRef(null);
+  const canvasRef = useRef(null);
+  const [isDarkTheme] = useState(true);
 
   useEffect(() => {
     gsap.fromTo(
       sectionRef.current,
-      { opacity: 0, y: 100 },
+      { opacity: 0 },
       {
         opacity: 1,
-        y: 0,
-        duration: 1.8,
-        ease: "power4.out",
+        duration: 0.8,
+        ease: "power2.out",
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 80%",
+          start: "top 90%",
         },
       }
     );
 
     gsap.fromTo(
       titleRef.current,
-      { scale: 0.8, opacity: 0 },
-      { scale: 1, opacity: 1, duration: 1.2, ease: "elastic.out(1, 0.5)", delay: 0.3 }
+      { opacity: 0 },
+      { opacity: 1, duration: 0.6, ease: "power2.out", delay: 0.1 }
     );
 
     const sr = ScrollReveal({
       origin: "bottom",
-      distance: "40px",
-      duration: 1400,
-      delay: 200,
-      easing: "cubic-bezier(0.68, -0.55, 0.27, 1.55)",
-      interval: 100,
-      reset: true,
+      distance: "20px",
+      duration: 800,
+      delay: 100,
+      easing: "ease-out",
+      interval: 50,
+      reset: false,
     });
 
     sr.reveal(".skill-item");
-  }, []);
+
+    const canvas = canvasRef.current;
+    if (canvas) {
+      const ctx = canvas.getContext("2d");
+      let w = (canvas.width = window.innerWidth);
+      let h = (canvas.height = window.innerHeight);
+      const particles = Array.from({ length: 50 }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        radius: Math.random() * 2 + 1,
+        dx: (Math.random() - 0.5) * 0.5,
+        dy: (Math.random() - 0.5) * 0.5,
+        color: `hsl(${Math.random() * 360}, 70%, ${isDarkTheme ? 80 : 60}%)`,
+      }));
+
+      let mouse = { x: null, y: null };
+
+      const animateParticles = () => {
+        ctx.clearRect(0, 0, w, h);
+        ctx.fillStyle = isDarkTheme ? "#0d0d26" : "#e6f3ff";
+        ctx.fillRect(0, 0, w, h);
+
+        particles.forEach(particle => {
+          ctx.beginPath();
+          ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+          ctx.fillStyle = particle.color;
+          ctx.fill();
+
+          if (mouse.x && mouse.y) {
+            const dx = mouse.x - particle.x;
+            const dy = mouse.y - particle.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < 100) {
+              particle.dx += dx * 0.01;
+              particle.dy += dy * 0.01;
+            }
+          }
+
+          particle.x += particle.dx;
+          particle.y += particle.dy;
+          if (particle.x < 0 || particle.x > w) particle.dx *= -1;
+          if (particle.y < 0 || particle.y > h) particle.dy *= -1;
+        });
+
+        requestAnimationFrame(animateParticles);
+      };
+
+      const handleResize = () => {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+      };
+
+      const handleMouseMove = (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+      };
+
+      window.addEventListener("resize", handleResize);
+      window.addEventListener("mousemove", handleMouseMove);
+      animateParticles();
+
+      return () => {
+        window.removeEventListener("resize", handleResize);
+        window.removeEventListener("mousemove", handleMouseMove);
+      };
+    }
+  }, [isDarkTheme]);
 
   return (
     <section
       id="skills"
       ref={sectionRef}
-      className="py-10 sm:py-12 md:py-16 lg:py-20 px-4 sm:px-6 md:px-8 lg:px-10 bg-[#0e0e0e] text-white overflow-hidden relative min-h-[60vh] sm:min-h-[70vh]"
+      className="py-8 sm:py-10 md:py-12 lg:py-14 px-4 sm:px-6 md:px-8 lg:px-10 bg-[#0e0d26] text-white overflow-hidden relative min-h-[50vh]"
     >
-      <div
-        ref={cuboidRef}
-        className="absolute inset-0 opacity-40 pointer-events-none block"
-      >
-        {[...Array(13)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute cuboid"
-            style={{
-              width: `${Math.random() * 80 + 40}px`,
-              height: `${Math.random() * 80 + 40}px`,
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              transform: `translateZ(${Math.random() * 500 - 250}px)`,
-              background: `linear-gradient(135deg, rgba(192, 132, 252, 0.8), rgba(125, 211, 252, 0.6))`,
-              boxShadow: `0 0 25px rgba(192, 132, 252, 0.7), 0 0 50px rgba(125, 211, 252, 0.4)`,
-              border: `1px solid rgba(192, 132, 252, 0.85)`,
-              animation: `float ${Math.random() * 12 + 6}s infinite ease-in-out ${Math.random() * 5}s`,
-              borderRadius: "6px",
-            }}
-          />
-        ))}
+      <div className="absolute top-0 left-0 w-full h-full z-0">
+        <canvas ref={canvasRef} className="w-full h-full"></canvas>
       </div>
+      <div className={`absolute w-[300px] h-[300px] ${isDarkTheme ? 'bg-gradient-to-r from-purple-700 to-pink-500' : 'bg-gradient-to-r from-blue-300 to-cyan-400'} rounded-full blur-[180px] opacity-20 top-[-80px] left-[-80px] animate-[spin_15s_linear_infinite]`}></div>
+      <div className={`absolute w-[250px] h-[250px] ${isDarkTheme ? 'bg-gradient-to-r from-blue-600 to-cyan-500' : 'bg-gradient-to-r from-pink-300 to-purple-400'} rounded-full blur-[180px] opacity-20 bottom-[-80px] right-[-80px] animate-[spin_12s_linear_infinite_reverse]`}></div>
 
-      <div className="max-w-6xl mx-auto text-center relative z-10">
+      <div className="max-w-5xl mx-auto text-center relative z-10">
         <h2
           ref={titleRef}
-          className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold mb-6 sm:mb-8 md:mb-10 lg:mb-12 tracking-wide relative inline-block"
+          className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 sm:mb-8 md:mb-10 tracking-wide relative inline-block"
         >
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 via-purple-300 to-pink-300 animate-gradient">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 via-purple-300 to-pink-300">
             ⚡ Tech Arsenal ⚡
           </span>
-          <span className="absolute -bottom-1 sm:-bottom-1.5 md:-bottom-2 left-0 w-full h-1 sm:h-1.5 md:h-2 bg-gradient-to-r from-cyan-200 to-purple-300 animate-pulse rounded-full"></span>
-          <span className="absolute inset-0 opacity-20 blur-lg sm:blur-xl bg-gradient-to-r from-cyan-200 to-purple-300 animate-glow"></span>
+          <span className="absolute -bottom-1 left-0 w-full h-1 bg-gradient-to-r from-cyan-200 to-purple-300 rounded-full"></span>
         </h2>
 
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-5 md:gap-6 lg:gap-8 px-2 sm:px-2 md:px-2 md:py-4 sm:py-2 py-2">
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 sm:gap-4 md:gap-5 px-2 py-2">
           {skills.map((skill, index) => (
             <div
               key={index}
-              className="skill-item bg-gray-900/80 backdrop-blur-xl border border-purple-300/40 rounded-xl p-9 sm:p-8 md:p-10 lg:p-8 shadow-md hover:shadow-[0_0_25px_rgba(192,132,252,0.6)] transform transition-all duration-500 hover:scale-105 hover:-translate-y-1 relative overflow-visible group cursor-pointer"
+              className="skill-item bg-gray-900/80 backdrop-blur-md border border-purple-300/30 rounded-lg p-4 sm:p-5 md:p-6 shadow-sm hover:shadow-[0_0_15px_rgba(192,132,252,0.5)] transform transition-all duration-300 hover:scale-105 relative group cursor-pointer"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-400/25 to-cyan-400/25 opacity-0 group-hover:opacity-100 transition-opacity duration-400"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-400/20 to-cyan-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-400">
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <svg className="w-full h-full" viewBox="0 0 100 100">
                   <circle
                     cx="50"
                     cy="50"
                     r="45"
                     fill="none"
-                    stroke="rgba(192, 132, 252, 0.25)"
-                    strokeWidth="3"
+                    stroke="rgba(192, 132, 252, 0.2)"
+                    strokeWidth="2"
                   />
                   <circle
                     cx="50"
@@ -143,10 +186,9 @@ const Skill = () => {
                     r="45"
                     fill="none"
                     stroke="url(#grad)"
-                    strokeWidth="3"
+                    strokeWidth="2"
                     strokeDasharray={`${skill.proficiency * 2.83}, 283`}
                     transform="rotate(-90 50 50)"
-                    className="animate-draw"
                   />
                   <defs>
                     <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -157,11 +199,11 @@ const Skill = () => {
                 </svg>
               </div>
 
-              <div className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl mb-2 sm:mb-3 md:mb-4 flex justify-center animate-float relative z-0">
+              <div className="text-3xl sm:text-4xl md:text-5xl mb-2 flex justify-center relative z-10">
                 {skill.icon}
               </div>
-              <p className="text-sm sm:text-base md:text-lg lg:text-xl font-semibold tracking-wide text-white relative z-0">{skill.name}</p>
-              <p className="text-xs sm:text-sm md:text-base text-cyan-200 opacity-0 group-hover:opacity-100 transition-opacity duration-400 relative z-0 mt-1 sm:mt-2">
+              <p className="text-xs sm:text-sm md:text-base font-semibold text-white relative z-10">{skill.name}</p>
+              <p className="text-xs text-cyan-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300 relative z-10 mt-1">
                 {skill.proficiency}%
               </p>
             </div>
@@ -171,51 +213,18 @@ const Skill = () => {
 
       <style>
         {`
-          .cuboid {
-            transform-style: preserve-3d;
-            position: absolute;
+          .animate-pulse {
+            animation: pulse 2s ease-in-out infinite;
           }
 
-          @keyframes float {
-            0%, 100% {
-              transform: translateZ(-150px) translateY(0);
-            }
-            50% {
-              transform: translateZ(150px) translateY(-25px);
-            }
+          @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
           }
 
-          .animate-float {
-            animation: float 4s infinite ease-in-out;
-          }
-
-          .animate-gradient {
-            background-size: 200% 200%;
-            animation: gradientFlow 6s ease infinite;
-          }
-
-          .animate-glow {
-            animation: glow 2.5s ease-in-out infinite;
-          }
-
-          @keyframes gradientFlow {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-          }
-
-          @keyframes glow {
-            0%, 100% { opacity: 0.2; }
-            50% { opacity: 0.5; }
-          }
-
-          .animate-draw {
-            animation: draw 0.8s ease-out forwards;
-          }
-
-          @keyframes draw {
-            from { stroke-dashoffset: 283; }
-            to { stroke-dashoffset: 0; }
+          @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
           }
         `}
       </style>
