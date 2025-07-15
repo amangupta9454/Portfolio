@@ -9,7 +9,7 @@ const NavBar = () => {
   const navLinks = [
     { name: "Home", href: "#home" },
     { name: "About", href: "#about" },
-    { name: "Skills", href: "#skills" }, // Keep this as #skills
+    { name: "Skills", href: "#skills" },
     { name: "Projects", href: "#projects" },
     { name: "Experience", href: "#experience" },
     { name: "Qualifications", href: "#qualifications" },
@@ -24,26 +24,31 @@ const NavBar = () => {
       { y: 0, opacity: 1, duration: 1.2, ease: "power3.out" }
     );
 
-    // Stagger nav links
+    // Desktop nav links animation: Fast fade-in with scale
     gsap.fromTo(
       ".nav-link",
-      { opacity: 0, y: -20 },
+      { opacity: 0, scale: 0.8 },
       {
         opacity: 1,
-        y: 0,
-        duration: 0.8,
-        stagger: 0.15,
-        delay: 0.6,
-        ease: "power2.out",
+        scale: 1,
+        duration: 0.5,
+        stagger: 0.1,
+        ease: "back.out(1.7)",
       }
     );
 
-    // Mobile menu animation
+    // Mobile menu animation: Fast fade-in with scale for individual links
     if (isOpen) {
       gsap.fromTo(
-        mobileMenuRef.current,
-        { y: -30, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" }
+        ".mobile-nav-link",
+        { opacity: 0, scale: 0.8 },
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 0.5,
+          stagger: 0.1,
+          ease: "back.out(1.7)",
+        }
       );
     }
   }, [isOpen]);
@@ -54,7 +59,7 @@ const NavBar = () => {
     if (target) {
       target.scrollIntoView({ behavior: "smooth" });
     } else {
-      console.log(`Element with ID ${href} not found`); // Debug log
+      console.log(`Element with ID ${href} not found`);
     }
     setIsOpen(false);
   };
@@ -64,21 +69,20 @@ const NavBar = () => {
       <div className="container lg:mx-auto md:mx-3 flex justify-between items-center">
         {/* Logo/Name */}
         <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">
-  <a
-    href="#home"
-    onClick={(e) => handleScroll(e, "#home")}
-    className="relative group"
-  >
-    <span
-      className="bg-clip-text text-transparent bg-gradient-to-r from-pink-700 via-teal-300 to-blue-400 group-hover:animate-gradient bg-[length:200%_100%] lg:mr-3 md:mr-4 md:ml-3 transition-colors duration-300"
-      style={{ fontFamily: "'Cedarville Cursive', cursive" }}
-    >
-      PORTFOLIO
-    </span>
-    <span className="absolute -bottom-2 left-0 w-0 h-1 bg-gradient-to-r from-blue-400 to-teal-300 group-hover:w-full transition-all duration-500 rounded-full" />
-  </a>
-</h1>
-
+          <a
+            href="#home"
+            onClick={(e) => handleScroll(e, "#home")}
+            className="relative group"
+          >
+            <span
+              className="bg-clip-text text-transparent bg-gradient-to-r from-pink-700 via-teal-300 to-blue-400 group-hover:animate-gradient bg-[length:200%_100%] lg:mr-3 md:mr-4 md:ml-3 transition-colors duration-300"
+              style={{ fontFamily: "'Cedarville Cursive', cursive" }}
+            >
+              PORTFOLIO
+            </span>
+            <span className="absolute -bottom-2 left-0 w-0 h-1 bg-gradient-to-r from-blue-400 to-teal-300 group-hover:w-full transition-all duration-500 rounded-full" />
+          </a>
+        </h1>
 
         {/* Desktop Menu */}
         <ul className="hidden md:flex lg:gap-12 md:gap-6 items-center">
@@ -122,7 +126,7 @@ const NavBar = () => {
                 <a
                   href={link.href}
                   onClick={(e) => handleScroll(e, link.href)}
-                  className="nav-link block text-xl font-semibold tracking-wider text-gray-200 hover:text-white transition-all duration-400 py-3 relative group transform hover:scale-105 hover:drop-shadow-[0_0_10px_rgba(20,184,166,0.5)]"
+                  className="mobile-nav-link block text-xl font-semibold tracking-wider text-gray-200 hover:text-white transition-all duration-400 py-3 relative group transform hover:scale-105 hover:drop-shadow-[0_0_10px_rgba(20,184,166,0.5)]"
                 >
                   <span className="relative z-10">{link.name}</span>
                   <span className="absolute bottom-1 left-0 w-full h-1 bg-teal-400/30 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left rounded-full" />
