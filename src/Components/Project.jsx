@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "../assets/image.png";
 import calculatorImage from "../assets/calculator.jpeg";
-import techImage from "../assets/techclub.jpg";
 import agri from "../assets/agri.jpg";
 import health from "../assets/health.jpeg";
+import coach from "../assets/coach.jpg";
 import { FaCode, FaExternalLinkAlt, FaStar } from "react-icons/fa";
 
 const Projects = () => {
@@ -13,6 +13,16 @@ const Projects = () => {
   const projects = [
     {
       id: 1,
+      name: "AI CAREER COACH WEBSITE",
+      description: "Developed an AI-powered career coach web app using MERN stack and Gemini API for personalized roadmaps and resume generation.",
+      image: coach,
+      sourceCode: "https://github.com/amangupta9454/AI_TUTOR",
+      livePreview: "https://mindstep.netlify.app/",
+      tags: ["REACT.JS", "TAILWIND CSS", "MONGODB", "EXPRESS.JS", "NODE.JS", "GEMINI API"],
+      featured: true,
+    },
+    {
+      id: 2,
       name: "FARMIO-Local Roots, Fresh Routes",
       description: "A fully functional FARMER-CONSUMER AGRICULTURE website with modern UI and custom features.",
       image: agri,
@@ -22,37 +32,7 @@ const Projects = () => {
       featured: true,
     },
     {
-      id: 2,
-      name: "TECH FEST REGISTRATION WEBSITE",
-      description: "A fully functional college technical fest website with modern UI and custom features.",
-      image: calculatorImage,
-      sourceCode: "https://github.com/amangupta9454/CROSSROAD_2025",
-      livePreview: "https://crossroad2025.netlify.app/",
-      tags: ["REACT.JS", "TAILWIND CSS", "MONGODB", "EXPRESS.JS", "NODE.JS"],
-      featured: false,
-    },
-    {
       id: 3,
-      name: "Tech Club Portal",
-      description: "A fully functional college technical club website with modern UI and custom features.",
-      image: techImage,
-      sourceCode: "https://github.com/amangupta9454/Technical_club",
-      livePreview: "https://techfusion2024.netlify.app/",
-      tags: ["React", "TailwindCSS", "Animations"],
-      featured: false,
-    },
-    {
-      id: 4,
-      name: "TEAMUP PLATFORM FOR HACKATHON ENTHUSIASTS",
-      description: "A fully functional Teamup platform website with modern UI and custom features.",
-      image: Image,
-      sourceCode: "https://github.com/amangupta9454/college",
-      livePreview: "https://hietteam.netlify.app/",
-      tags: ["MERN STACK"],
-      featured: true,
-    },
-    {
-      id: 5,
       name: "AI-POWERED HEALTHCARE APPOINTMENT SYSTEM",
       description: "A fully functional AI-powered healthcare appointment system with modern UI and custom features.",
       image: health,
@@ -61,6 +41,28 @@ const Projects = () => {
       tags: ["REACT.JS", "TAILWIND CSS", "MONGODB", "EXPRESS.JS", "NODE.JS", "OPENAI API", "NODEMAILER", "GEMINI API"],
       featured: true,
     },
+    {
+      id: 4,
+      name: "TECH FEST REGISTRATION WEBSITE",
+      description: "A fully functional college technical fest website with modern UI and custom features.",
+      image: calculatorImage,
+      sourceCode: "https://github.com/amangupta9454/CROSSROAD_2025",
+      livePreview: "https://crossroad2025.netlify.app/",
+      tags: ["REACT.JS", "TAILWIND CSS", "MONGODB", "EXPRESS.JS", "NODE.JS"],
+      featured: false,
+    },
+    
+    {
+      id: 5,
+      name: "TEAMUP PLATFORM FOR HACKATHON ENTHUSIASTS",
+      description: "A fully functional Teamup platform website with modern UI and custom features.",
+      image: Image,
+      sourceCode: "https://github.com/amangupta9454/college",
+      livePreview: "https://hietteam.netlify.app/",
+      tags: ["MERN STACK"],
+      featured: false,
+    },
+    
   ];
 
   useEffect(() => {
