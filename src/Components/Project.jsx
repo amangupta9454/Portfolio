@@ -26,7 +26,7 @@ const Projects = () => {
       name: "FARMIO-Local Roots, Fresh Routes",
       description: "A fully functional FARMER-CONSUMER AGRICULTURE website with modern UI and custom features.",
       image: agri,
-      sourceCode: "https://github.com/amangupta9454/FARMER-CONSUMER-MARKER",
+      sourceCode: "https://github.com/amangupta9454/FARMIO",
       livePreview: "https://agrifarmio.netlify.app/",
       tags: ["REACT.JS", "TAILWIND CSS", "MONGODB", "EXPRESS.JS", "NODE.JS", "OPENAI API", "DATA.GOV API"],
       featured: true,
