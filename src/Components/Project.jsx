@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import Image from "../assets/image.png";
 import calculatorImage from "../assets/calculator.jpeg";
 import agri from "../assets/agri.jpg";
-import health from "../assets/health.jpeg";
 import coach from "../assets/coach.jpg";
 import { FaCode, FaExternalLinkAlt, FaStar } from "react-icons/fa";
 
@@ -31,29 +30,20 @@ const Projects = () => {
       tags: ["REACT.JS", "TAILWIND CSS", "MONGODB", "EXPRESS.JS", "NODE.JS", "OPENAI API", "DATA.GOV API"],
       featured: true,
     },
+    
     {
       id: 3,
-      name: "AI-POWERED HEALTHCARE APPOINTMENT SYSTEM",
-      description: "A fully functional AI-powered healthcare appointment system with modern UI and custom features.",
-      image: health,
-      sourceCode: "https://github.com/amangupta9454/AI_HEALTHCARE",
-      livePreview: "https://amanhealth.netlify.app/",
-      tags: ["REACT.JS", "TAILWIND CSS", "MONGODB", "EXPRESS.JS", "NODE.JS", "OPENAI API", "NODEMAILER", "GEMINI API"],
-      featured: true,
-    },
-    {
-      id: 4,
       name: "TECH FEST REGISTRATION WEBSITE",
       description: "A fully functional college technical fest website with modern UI and custom features.",
       image: calculatorImage,
-      sourceCode: "https://github.com/amangupta9454/CROSSROAD_2025",
-      livePreview: "https://crossroad2025.netlify.app/",
+      sourceCode: "https://github.com/amangupta9454/HIET_TECHFEST",
+      livePreview: "http://hiet-crossroad.netlify.app/",
       tags: ["REACT.JS", "TAILWIND CSS", "MONGODB", "EXPRESS.JS", "NODE.JS"],
       featured: false,
     },
     
     {
-      id: 5,
+      id: 4,
       name: "TEAMUP PLATFORM FOR HACKATHON ENTHUSIASTS",
       description: "A fully functional Teamup platform website with modern UI and custom features.",
       image: Image,
