@@ -11,11 +11,6 @@ import {
   FaGitAlt
 } from "react-icons/fa";
 import { SiTailwindcss, SiPython, SiCplusplus, SiExpress } from "react-icons/si";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import ScrollReveal from "scrollreveal";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const skills = [
   { name: "HTML5", icon: <FaHtml5 className="text-orange-600" />, proficiency: 90 },
@@ -35,199 +30,320 @@ const skills = [
 
 const Skill = () => {
   const sectionRef = useRef(null);
-  const titleRef = useRef(null);
   const canvasRef = useRef(null);
-  const [isDarkTheme] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
+  const animationRef = useRef(null);
 
   useEffect(() => {
-    gsap.fromTo(
-      sectionRef.current,
-      { opacity: 0 },
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
       {
-        opacity: 1,
-        duration: 0.8,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 90%",
-        },
+        threshold: 0.1,
+        rootMargin: '100px'
       }
     );
 
-    gsap.fromTo(
-      titleRef.current,
-      { opacity: 0 },
-      { opacity: 1, duration: 0.6, ease: "power2.out", delay: 0.1 }
-    );
-
-    const sr = ScrollReveal({
-      origin: "bottom",
-      distance: "20px",
-      duration: 800,
-      delay: 100,
-      easing: "ease-out",
-      interval: 50,
-      reset: false,
-    });
-
-    sr.reveal(".skill-item");
-
-    const canvas = canvasRef.current;
-    if (canvas) {
-      const ctx = canvas.getContext("2d");
-      let w = (canvas.width = window.innerWidth);
-      let h = (canvas.height = window.innerHeight);
-      const particles = Array.from({ length: 50 }, () => ({
-        x: Math.random() * w,
-        y: Math.random() * h,
-        radius: Math.random() * 2 + 1,
-        dx: (Math.random() - 0.5) * 0.5,
-        dy: (Math.random() - 0.5) * 0.5,
-        color: `hsl(${Math.random() * 360}, 70%, ${isDarkTheme ? 80 : 60}%)`,
-      }));
-
-      let mouse = { x: null, y: null };
-
-      const animateParticles = () => {
-        ctx.clearRect(0, 0, w, h);
-        ctx.fillStyle = isDarkTheme ? "#0d0d26" : "#e6f3ff";
-        ctx.fillRect(0, 0, w, h);
-
-        particles.forEach(particle => {
-          ctx.beginPath();
-          ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
-          ctx.fillStyle = particle.color;
-          ctx.fill();
-
-          if (mouse.x && mouse.y) {
-            const dx = mouse.x - particle.x;
-            const dy = mouse.y - particle.y;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            if (distance < 100) {
-              particle.dx += dx * 0.01;
-              particle.dy += dy * 0.01;
-            }
-          }
-
-          particle.x += particle.dx;
-          particle.y += particle.dy;
-          if (particle.x < 0 || particle.x > w) particle.dx *= -1;
-          if (particle.y < 0 || particle.y > h) particle.dy *= -1;
-        });
-
-        requestAnimationFrame(animateParticles);
-      };
-
-      const handleResize = () => {
-        w = canvas.width = window.innerWidth;
-        h = canvas.height = window.innerHeight;
-      };
-
-      const handleMouseMove = (e) => {
-        mouse.x = e.clientX;
-        mouse.y = e.clientY;
-      };
-
-      window.addEventListener("resize", handleResize);
-      window.addEventListener("mousemove", handleMouseMove);
-      animateParticles();
-
-      return () => {
-        window.removeEventListener("resize", handleResize);
-        window.removeEventListener("mousemove", handleMouseMove);
-      };
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
     }
-  }, [isDarkTheme]);
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas || !isVisible) return;
+
+    const ctx = canvas.getContext('2d');
+    let animationId;
+    
+    const resizeCanvas = () => {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    };
+    
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    // Optimized particle system
+    const particles = Array.from({ length: 30 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      radius: Math.random() * 1.5 + 0.5,
+      dx: (Math.random() - 0.5) * 0.3,
+      dy: (Math.random() - 0.5) * 0.3,
+      opacity: Math.random() * 0.5 + 0.2,
+      color: Math.random() > 0.5 ? '#8b5cf6' : '#06b6d4'
+    }));
+
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      particles.forEach(particle => {
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+        ctx.fillStyle = particle.color + Math.floor(particle.opacity * 255).toString(16).padStart(2, '0');
+        ctx.fill();
+
+        particle.x += particle.dx;
+        particle.y += particle.dy;
+
+        if (particle.x < 0 || particle.x > canvas.width) particle.dx *= -1;
+        if (particle.y < 0 || particle.y > canvas.height) particle.dy *= -1;
+      });
+
+      animationId = requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    return () => {
+      window.removeEventListener('resize', resizeCanvas);
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
+    };
+  }, [isVisible]);
 
   return (
     <section
       id="skills"
       ref={sectionRef}
-      className="py-8 sm:py-10 md:py-12 lg:py-14 px-4 sm:px-6 md:px-8 lg:px-10 bg-[#0e0d26] text-white overflow-hidden relative min-h-[50vh]"
+      className={`py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-10 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white overflow-hidden relative min-h-screen transition-all duration-1000 ${
+        isVisible ? 'opacity-100' : 'opacity-0'
+      }`}
     >
-      <div className="absolute top-0 left-0 w-full h-full z-0">
-        <canvas ref={canvasRef} className="w-full h-full"></canvas>
-      </div>
-      <div className={`absolute w-[300px] h-[300px] ${isDarkTheme ? 'bg-gradient-to-r from-purple-700 to-pink-500' : 'bg-gradient-to-r from-blue-300 to-cyan-400'} rounded-full blur-[180px] opacity-20 top-[-80px] left-[-80px] animate-[spin_15s_linear_infinite]`}></div>
-      <div className={`absolute w-[250px] h-[250px] ${isDarkTheme ? 'bg-gradient-to-r from-blue-600 to-cyan-500' : 'bg-gradient-to-r from-pink-300 to-purple-400'} rounded-full blur-[180px] opacity-20 bottom-[-80px] right-[-80px] animate-[spin_12s_linear_infinite_reverse]`}></div>
+      {/* Animated Canvas Background */}
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 w-full h-full pointer-events-none"
+        style={{ zIndex: 1 }}
+      />
 
-      <div className="max-w-5xl mx-auto text-center relative z-10">
+      {/* Floating Background Elements */}
+      <div className="absolute inset-0 overflow-hidden" style={{ zIndex: 2 }}>
+        <div className="absolute top-20 left-10 w-64 h-64 bg-purple-500/20 rounded-full blur-3xl animate-float"></div>
+        <div className="absolute bottom-20 right-10 w-80 h-80 bg-cyan-500/20 rounded-full blur-3xl animate-float-delayed"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-pink-500/15 rounded-full blur-3xl animate-pulse-slow"></div>
+      </div>
+
+      {/* Grid Pattern Overlay */}
+      <div 
+        className="absolute inset-0 opacity-10"
+        style={{
+          zIndex: 3,
+          backgroundImage: `
+            linear-gradient(rgba(139, 92, 246, 0.3) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(139, 92, 246, 0.3) 1px, transparent 1px)
+          `,
+          backgroundSize: '50px 50px'
+        }}
+      />
+
+      <div className="max-w-6xl mx-auto text-center relative" style={{ zIndex: 10 }}>
         <h2
-          ref={titleRef}
-          className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 sm:mb-8 md:mb-10 tracking-wide relative inline-block"
+          className={`text-4xl sm:text-5xl lg:text-6xl font-bold mb-12 sm:mb-16 tracking-wide relative inline-block transition-all duration-1000 delay-300 ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
         >
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 via-purple-300 to-pink-300">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 animate-gradient">
             ⚡ Tech Arsenal ⚡
           </span>
-          <span className="absolute -bottom-1 left-0 w-full h-1 bg-gradient-to-r from-cyan-200 to-purple-300 rounded-full"></span>
+          <div className="absolute -bottom-3 left-0 w-full h-1 bg-gradient-to-r from-cyan-400 to-purple-400 rounded-full transform scale-x-0 animate-scale-x"></div>
         </h2>
 
-        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 sm:gap-4 md:gap-5 px-2 py-2">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 sm:gap-8 px-2">
           {skills.map((skill, index) => (
             <div
               key={index}
-              className="skill-item bg-gray-900/80 backdrop-blur-md border border-purple-300/30 rounded-lg p-4 sm:p-5 md:p-6 shadow-sm hover:shadow-[0_0_15px_rgba(192,132,252,0.5)] transform transition-all duration-300 hover:scale-105 relative group cursor-pointer"
+              className={`skill-card group relative bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6 sm:p-8 
+                hover:bg-white/20 hover:border-purple-400/60 hover:shadow-2xl hover:shadow-purple-500/30
+                transform transition-all duration-700 hover:scale-110 hover:-translate-y-4 cursor-pointer
+                ${isVisible ? 'animate-slide-up' : 'opacity-0 translate-y-12'}`}
+              style={{ 
+                animationDelay: `${index * 150}ms`,
+                backdropFilter: 'blur(20px)'
+              }}
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-400/20 to-cyan-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              {/* Animated Border */}
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-400 via-cyan-400 to-pink-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-spin-slow"></div>
+              <div className="absolute inset-[2px] rounded-2xl bg-slate-900/90 group-hover:bg-slate-800/90 transition-colors duration-500"></div>
 
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <svg className="w-full h-full" viewBox="0 0 100 100">
-                  <circle
-                    cx="50"
-                    cy="50"
-                    r="45"
-                    fill="none"
-                    stroke="rgba(192, 132, 252, 0.2)"
+              {/* Hover Glow Effect */}
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-400/30 to-cyan-400/30 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl"></div>
+
+              {/* Progress Circle */}
+              <div className="absolute top-3 right-3 w-10 h-10 opacity-0 group-hover:opacity-100 transition-all duration-500">
+                <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                  <path
+                    className="text-white/20"
+                    stroke="currentColor"
                     strokeWidth="2"
-                  />
-                  <circle
-                    cx="50"
-                    cy="50"
-                    r="45"
                     fill="none"
-                    stroke="url(#grad)"
-                    strokeWidth="2"
-                    strokeDasharray={`${skill.proficiency * 2.83}, 283`}
-                    transform="rotate(-90 50 50)"
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                   />
-                  <defs>
-                    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" style={{ stopColor: "#c084fc" }} />
-                      <stop offset="100%" style={{ stopColor: "#7dd3fc" }} />
-                    </linearGradient>
-                  </defs>
+                  <path
+                    className="text-purple-400 animate-draw-circle"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    fill="none"
+                    strokeDasharray={`${skill.proficiency}, 100`}
+                    strokeLinecap="round"
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                  />
                 </svg>
               </div>
 
-              <div className="text-3xl sm:text-4xl md:text-5xl mb-2 flex justify-center relative z-10">
+              {/* Icon */}
+              <div className="text-4xl sm:text-5xl mb-4 flex justify-center relative z-10 group-hover:scale-125 group-hover:rotate-12 transition-all duration-500">
                 {skill.icon}
               </div>
-              <p className="text-xs sm:text-sm md:text-base font-semibold text-white relative z-10">{skill.name}</p>
-              <p className="text-xs text-cyan-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300 relative z-10 mt-1">
-                {skill.proficiency}%
+
+              {/* Skill Name */}
+              <p className="text-base sm:text-lg font-bold text-white/95 relative z-10 mb-2 group-hover:text-white transition-colors duration-300">
+                {skill.name}
               </p>
+              
+              {/* Proficiency */}
+              <p className="text-sm text-purple-300 opacity-0 group-hover:opacity-100 transition-all duration-500 relative z-10 font-semibold">
+                {skill.proficiency}% Mastery
+              </p>
+
+              {/* Bottom Accent */}
+              <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-purple-400 to-cyan-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left rounded-b-2xl"></div>
             </div>
           ))}
         </div>
       </div>
 
-      <style>
-        {`
-          .animate-pulse {
-            animation: pulse 2s ease-in-out infinite;
+      <style jsx>{`
+        @keyframes slide-up {
+          from {
+            opacity: 0;
+            transform: translateY(50px);
           }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
 
-          @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.6; }
+        @keyframes scale-x {
+          from {
+            transform: scaleX(0);
           }
+          to {
+            transform: scaleX(1);
+          }
+        }
 
-          @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        @keyframes float {
+          0%, 100% {
+            transform: translateY(0px) rotate(0deg);
           }
-        `}
-      </style>
+          50% {
+            transform: translateY(-20px) rotate(180deg);
+          }
+        }
+
+        @keyframes float-delayed {
+          0%, 100% {
+            transform: translateY(0px) rotate(0deg);
+          }
+          50% {
+            transform: translateY(-30px) rotate(-180deg);
+          }
+        }
+
+        @keyframes pulse-slow {
+          0%, 100% {
+            opacity: 0.15;
+            transform: translate(-50%, -50%) scale(1);
+          }
+          50% {
+            opacity: 0.25;
+            transform: translate(-50%, -50%) scale(1.1);
+          }
+        }
+
+        @keyframes gradient {
+          0%, 100% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+        }
+
+        @keyframes spin-slow {
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
+        }
+
+        @keyframes draw-circle {
+          from {
+            stroke-dasharray: 0, 100;
+          }
+          to {
+            stroke-dasharray: var(--progress, 0), 100;
+          }
+        }
+
+        .animate-slide-up {
+          animation: slide-up 0.8s ease-out forwards;
+        }
+
+        .animate-scale-x {
+          animation: scale-x 1.2s ease-out 0.8s forwards;
+        }
+
+        .animate-float {
+          animation: float 6s ease-in-out infinite;
+        }
+
+        .animate-float-delayed {
+          animation: float-delayed 8s ease-in-out infinite;
+        }
+
+        .animate-pulse-slow {
+          animation: pulse-slow 4s ease-in-out infinite;
+        }
+
+        .animate-gradient {
+          background-size: 200% 200%;
+          animation: gradient 3s ease infinite;
+        }
+
+        .animate-spin-slow {
+          animation: spin-slow 3s linear infinite;
+        }
+
+        .animate-draw-circle {
+          animation: draw-circle 1s ease-out forwards;
+        }
+
+        .skill-card:nth-child(1) { animation-delay: 0ms; }
+        .skill-card:nth-child(2) { animation-delay: 150ms; }
+        .skill-card:nth-child(3) { animation-delay: 300ms; }
+        .skill-card:nth-child(4) { animation-delay: 450ms; }
+        .skill-card:nth-child(5) { animation-delay: 600ms; }
+        .skill-card:nth-child(6) { animation-delay: 750ms; }
+        .skill-card:nth-child(7) { animation-delay: 900ms; }
+        .skill-card:nth-child(8) { animation-delay: 1050ms; }
+        .skill-card:nth-child(9) { animation-delay: 1200ms; }
+        .skill-card:nth-child(10) { animation-delay: 1350ms; }
+        .skill-card:nth-child(11) { animation-delay: 1500ms; }
+        .skill-card:nth-child(12) { animation-delay: 1650ms; }
+        .skill-card:nth-child(13) { animation-delay: 1800ms; }
+      `}</style>
     </section>
   );
 };
